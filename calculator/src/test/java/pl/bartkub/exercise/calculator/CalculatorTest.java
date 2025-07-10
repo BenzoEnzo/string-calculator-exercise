@@ -3,9 +3,24 @@ package pl.bartkub.exercise.calculator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CalculatorTest {
     private final Calculator calculator = new Calculator();
+
+    @Test
+    public void shouldThrowAnExceptionForNotSpecifiedDelimiter() {
+        int sum = calculator.add("//|\n1|2,8");
+
+        assertThrows(CalculationException.class,()->{});
+    }
+
+    @Test
+    public void shouldCorrectlySumValuesForUniqueDelimiter() {
+        int sum = calculator.add("//|\n1|2|8");
+
+        assertEquals(11, sum);
+    }
 
     @Test
     public void shouldCorrectlyIgnoreBigNumberDuringSumOperation() {

@@ -1,10 +1,13 @@
 package pl.bartkub.exercise.calculator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Calculator {
 
     private final Parser parser = new Parser();
+    private final List<String> errors = new ArrayList<>();
 
     public Calculator() {
     }
@@ -14,7 +17,13 @@ public class Calculator {
             return 0;
         }
 
-        String[] parts = numbers.split("[,\n]");
+        String delimiter = parser.extractDelimiter(numbers);
+
+        if (numbers.startsWith("//")) {
+            numbers = numbers.substring(numbers.indexOf('\n') + 1);
+        }
+
+        String[] parts = numbers.split(delimiter);
 
         return calculate(transformToNumbers(parts));
     }
