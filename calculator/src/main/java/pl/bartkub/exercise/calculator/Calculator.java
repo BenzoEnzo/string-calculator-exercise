@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class Calculator {
 
+    private final Parser parser = new Parser();
+
     public Calculator() {
     }
 
