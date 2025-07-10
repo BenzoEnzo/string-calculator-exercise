@@ -9,10 +9,24 @@ public class CalculatorTest {
     private final Calculator calculator = new Calculator();
 
     @Test
-    public void shouldThrowAnExceptionForNotSpecifiedDelimiter() {
-        int sum = calculator.add("//|\n1|2,8");
+    public void shouldThrowExceptionForNegativeNumber() {
+        assertThrows(CalculationException.class,()->{
+            int sum = calculator.add("//|\n1|2|-8");
+        });
+    }
 
-        assertThrows(CalculationException.class,()->{});
+    @Test
+    public void shouldThrowExceptionWhenInputEndsWithDelimiter() {
+        assertThrows(CalculationException.class,()->{
+            int sum = calculator.add("//|\n1|2|8|");
+        });
+    }
+
+    @Test
+    public void shouldThrowAnExceptionForNotSpecifiedDelimiter() {
+        assertThrows(CalculationException.class,()->{
+            int sum = calculator.add("//|\n1|2,8");
+        });
     }
 
     @Test
