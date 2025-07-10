@@ -8,7 +8,7 @@ public class CalculatorTest {
     private final Calculator calculator = new Calculator();
 
     @Test
-    public void shouldReturnZeroForBlankInput(){
+    public void shouldReturnZeroForBlankInput() {
         int sum = calculator.add("  ");
 
         assertEquals(sum, 0);
