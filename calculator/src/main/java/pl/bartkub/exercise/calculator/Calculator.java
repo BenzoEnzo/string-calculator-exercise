@@ -1,14 +1,12 @@
 package pl.bartkub.exercise.calculator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Calculator {
-
     private final Parser parser = new Parser();
-    private final Stack<Integer> numbersToAdd = new Stack<>();
-    private final List<String> errors = new ArrayList<>();
+    private final CalculationValidator calculationValidator = new CalculationValidator();
+    private final List<String> negativeNumbers = new ArrayList<>();
+    private final Map<String, Integer> wrongDelimiters = new HashMap<>();
 
     public Calculator() {
     }
@@ -19,26 +17,45 @@ public class Calculator {
         }
 
         String delimiter = parser.extractDelimiter(numbers);
-        List<String> parts = parser.divideInput(numbers);
+        String[] parts = parser.divideInput(numbers);
 
-        return calculate(parts, delimiter);
+        int sum = calculate(parts, delimiter);
+
+        calculationValidator.validateSummaryOperation(negativeNumbers, wrongDelimiters);
+
+        return sum;
     }
 
-    private int calculate(List<String> parts, String delimiter) {
+    private int calculate(String[] parts, String delimiter) {
         int sum = 0;
 
-        for (String part : parts) {
-            if (part.matches(delimiter)) {
-                sum = addValueToSum(numbersToAdd.pop(), sum);
+        for (int i = 0; i < parts.length - 1; i += 2) {
+            int j = i + 1;
+
+            if (parts[j].matches(delimiter)) {
+                sum = processSummary(parts[i], j, delimiter, sum);
             } else {
-                int value = Integer.parseInt(part);
-                numbersToAdd.push(value);
+                wrongDelimiters.put(parts[j], j);
             }
         }
 
-        sum = addValueToSum(numbersToAdd.pop(), sum);
-
+        sum = processSummary(parts[parts.length - 1], parts.length - 1, delimiter, sum);
         return sum;
+    }
+
+    private int processSummary(String value, int index, String separator, int sum) {
+        try {
+            int parsedValue = Integer.parseInt(value);
+
+            if (parsedValue < 0) {
+                negativeNumbers.add(value);
+            }
+
+            return addValueToSum(parsedValue, sum);
+        } catch (Exception ex) {
+            wrongDelimiters.put(separator, index);
+        }
+        return 0;
     }
 
     private int addValueToSum(int value, int sum) {

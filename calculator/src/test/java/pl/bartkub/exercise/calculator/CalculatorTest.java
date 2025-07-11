@@ -2,31 +2,45 @@ package pl.bartkub.exercise.calculator;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorTest {
     private final Calculator calculator = new Calculator();
 
     @Test
-    public void shouldThrowExceptionForNegativeNumber() {
-        assertThrows(CalculationException.class,()->{
-            int sum = calculator.add("//|\n1|2|-8");
+    public void shouldThrowExceptionForNegativeNumberAndWrongDelimiters() {
+        CalculationException exception = assertThrows(CalculationException.class, () -> {
+            calculator.add("//|\n1|2,-8|-10");
         });
+
+        assertTrue(exception.getMessage().contains("Negative number(s) not allowed: -8, -10\n " +
+                "Found invalid delimiter(s): , at pos 3"));
+    }
+
+
+    @Test
+    public void shouldThrowExceptionForNegativeNumber() {
+        CalculationException exception = assertThrows(CalculationException.class, () ->
+                calculator.add("//|\n1|2|-8|-10")
+        );
+
+        assertTrue(exception.getMessage().contains("Negative number(s) not allowed: -8, -10"));
     }
 
     @Test
     public void shouldThrowExceptionWhenInputEndsWithDelimiter() {
-        assertThrows(CalculationException.class,()->{
-            int sum = calculator.add("//|\n1|2|8|");
-        });
+        CalculationException exception = assertThrows(CalculationException.class, () ->
+                calculator.add("//|\n1|2|8|")
+        );
+
+        String expectedMessage = "Found invalid delimiter(s): | at pos 5";
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     public void shouldThrowAnExceptionForNotSpecifiedDelimiter() {
-        assertThrows(CalculationException.class,()->{
-            int sum = calculator.add("//|\n1|2,8");
-        });
+        assertThrows(CalculationException.class, () -> calculator.add("//|\n1|2,8"));
     }
 
     @Test
@@ -58,10 +72,17 @@ public class CalculatorTest {
     }
 
     @Test
+    public void shouldCorrectlyReturnSingleNumber() {
+        int sum = calculator.add("999");
+
+        assertEquals(999, sum);
+    }
+
+
+    @Test
     public void shouldReturnZeroForBlankInput() {
         int sum = calculator.add("  ");
 
         assertEquals(0, sum);
     }
-
 }
