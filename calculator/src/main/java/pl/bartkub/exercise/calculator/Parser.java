@@ -9,6 +9,14 @@ public class Parser {
     public Parser() {
     }
 
+    public String extractRawDelimiter(String delimiter) {
+        if (delimiter.startsWith("\\Q") && delimiter.endsWith("\\E")) {
+            return delimiter.substring(2, delimiter.length() - 2);
+        }
+
+        return delimiter;
+    }
+
     public String extractDelimiter(String text) {
         if (text.startsWith("//")) {
             int newlineIndex = text.indexOf('\n');
@@ -18,7 +26,8 @@ public class Parser {
         return "[,\n]";
     }
 
-    public List<String> divideInput(String input) {
+
+    public String[] divideInput(String input) {
         if (input.startsWith("//")) {
             input = input.substring(input.indexOf('\n') + 1);
         }
@@ -44,6 +53,6 @@ public class Parser {
             parts.add(input.substring(index));
         }
 
-        return parts;
+        return parts.toArray(new String[0]);
     }
 }
