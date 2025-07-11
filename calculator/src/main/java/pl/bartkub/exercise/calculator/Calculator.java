@@ -59,10 +59,6 @@ public class Calculator {
     }
 
     private int addValueToSum(int value, int sum) {
-        if (value < 1001) {
-            sum += value;
-        }
-
-        return sum;
+        return (value < 1001) ? sum + value : sum;
     }
 }
