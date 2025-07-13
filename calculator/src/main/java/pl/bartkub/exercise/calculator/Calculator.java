@@ -8,9 +8,6 @@ public class Calculator {
     private final List<String> negativeNumbers = new ArrayList<>();
     private final Map<String, Integer> wrongDelimiters = new HashMap<>();
 
-    public Calculator() {
-    }
-
     public int add(String numbers) {
         if (numbers.isBlank()) {
             return 0;

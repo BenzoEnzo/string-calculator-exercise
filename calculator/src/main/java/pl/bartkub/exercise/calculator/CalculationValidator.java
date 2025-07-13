@@ -1,10 +1,9 @@
 package pl.bartkub.exercise.calculator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CalculationValidator {
 
@@ -18,16 +17,25 @@ public class CalculationValidator {
         throw new CalculationException(createCalculatorValidationMessage(negatives, wrongDelimiters));
     }
 
-    private String createCalculatorValidationMessage(List<String> negatives, Map<String, Integer> wrongDelimiters) {
-        return Stream.of(
-                        negatives.isEmpty() ? null
-                                : replacePlaceholder(ErrorMessage.NEGATIVE_NUMBERS.getText(),
-                                "numbers", String.join(", ", negatives)),
-                        wrongDelimiters.isEmpty() ? null
-                                : replacePlaceholder(ErrorMessage.WRONG_DELIMITERS.getText(),
-                                "delimiters", createDelimiterMessage(wrongDelimiters))
-                ).filter(Objects::nonNull)
-                .collect(Collectors.joining("\n "));
+    private String createCalculatorValidationMessage(List<String> negatives,
+                                                     Map<String, Integer> wrongDelimiters) {
+        List<String> errors = new ArrayList<>();
+
+        if (!negatives.isEmpty()) {
+            errors.add(replacePlaceholder(
+                    ErrorMessage.NEGATIVE_NUMBERS.getText(),
+                    "numbers",
+                    String.join(", ", negatives)));
+        }
+
+        if (!wrongDelimiters.isEmpty()) {
+            errors.add(replacePlaceholder(
+                    ErrorMessage.WRONG_DELIMITERS.getText(),
+                    "delimiters",
+                    createDelimiterMessage(wrongDelimiters)));
+        }
+
+        return String.join("\n ", errors);
     }
 
     private String createDelimiterMessage(Map<String, Integer> wrongDelimiters) {

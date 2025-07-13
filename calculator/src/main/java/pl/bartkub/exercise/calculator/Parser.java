@@ -6,8 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-    public Parser() {
-    }
 
     public String extractRawDelimiter(String delimiter) {
         if (delimiter.startsWith("\\Q") && delimiter.endsWith("\\E")) {
