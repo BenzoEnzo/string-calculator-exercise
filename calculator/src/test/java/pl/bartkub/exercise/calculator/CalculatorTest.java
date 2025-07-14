@@ -44,6 +44,13 @@ public class CalculatorTest {
     }
 
     @Test
+    public void shouldCorrectlySumValuesForUniqueDelimiterWithNumbers() {
+        int sum = calculator.add("//kk88s\n1kk88s2kk88s8");
+
+        assertEquals(11, sum);
+    }
+
+    @Test
     public void shouldCorrectlySumValuesForUniqueDelimiter() {
         int sum = calculator.add("//|\n1|2|8");
 

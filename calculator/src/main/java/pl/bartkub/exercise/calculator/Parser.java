@@ -26,13 +26,15 @@ public class Parser {
 
 
     public String[] divideInput(String input) {
+        String delimiter = extractDelimiter(input);
+
         if (input.startsWith("//")) {
             input = input.substring(input.indexOf('\n') + 1);
         }
 
         List<String> parts = new ArrayList<>();
 
-        Matcher matcher = Pattern.compile("-?\\d+").matcher(input);
+        Matcher matcher =  Pattern.compile("(" + delimiter + ")|(-?\\d+)").matcher(input);
 
         int index = 0;
 
