@@ -25,9 +25,7 @@ public class Parser {
     }
 
 
-    public String[] divideInput(String input) {
-        String delimiter = extractDelimiter(input);
-
+    public String[] divideInput(String input, String delimiter) {
         if (input.startsWith("//")) {
             input = input.substring(input.indexOf('\n') + 1);
         }

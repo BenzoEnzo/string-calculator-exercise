@@ -44,7 +44,7 @@ public class ParserTest {
         String input = "1,-44";
         String[] expected = new String[]{"1", ",", "-44"};
 
-        String[] result = parser.divideInput(input);;
+        String[] result = parser.divideInput(input, "[,\n]");;
 
         assertArrayEquals(expected, result);
     }
@@ -54,7 +54,7 @@ public class ParserTest {
         String input = "1,4 5\n";
         String[] expected = new String[]{"1", ",", "4", " ", "5", "\n"};
 
-        String[] result = parser.divideInput(input);
+        String[] result = parser.divideInput(input, "[,\n]");
 
         assertArrayEquals(expected, result);
     }
@@ -64,7 +64,7 @@ public class ParserTest {
         String input = "//sepq\n1sepq5,4;";
         String[] expected = new String[]{"1", "sepq", "5", ",", "4", ";"};
 
-        String[] result = parser.divideInput(input);
+        String[] result = parser.divideInput(input, "\\Qsepq\\E");
 
         assertArrayEquals(expected, result);
     }

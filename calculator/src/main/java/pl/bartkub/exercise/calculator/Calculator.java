@@ -14,7 +14,7 @@ public class Calculator {
         }
 
         String delimiter = parser.extractDelimiter(numbers);
-        String[] parts = parser.divideInput(numbers);
+        String[] parts = parser.divideInput(numbers, delimiter);
 
         int sum = calculate(parts, delimiter);
 
